@@ -1,0 +1,13 @@
+services:
+  app-development:
+    image: task-manager:development
+    build:
+      context: .
+      args:
+        - port=${APP_PORT}
+      target: development
+    volumes:
+      - ./:/app
+    ports:
+      - ${APP_PORT}:${APP_PORT}
+    restart: unless-stopped
