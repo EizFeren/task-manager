@@ -7,4 +7,5 @@ export enum EnvTypes {
 export enum ConfigDomains {
   envType = 'envType',
   app = 'app',
+  db = 'db',
 }
