@@ -1,8 +1,10 @@
 import { Module } from '@nestjs/common';
-import { ConfigModule } from '@nestjs/config';
+import { ConfigModule, ConfigService } from '@nestjs/config';
+import { SequelizeModule, SequelizeModuleOptions } from '@nestjs/sequelize';
 
 import { validateConfig } from 'src/config/validator/config.validator';
 import { loadConfig } from 'src/config/loader/config.loader';
+import { ConfigDomains } from 'src/config/config.enums';
 import { AppController } from 'src/app/app.controller';
 import { AppService } from 'src/app/app.service';
 
@@ -14,6 +16,14 @@ import { AppService } from 'src/app/app.service';
       load: [
         loadConfig,
       ],
+    }),
+    SequelizeModule.forRootAsync({
+      inject: [
+        ConfigService,
+      ],
+      useFactory(configService: ConfigService): SequelizeModuleOptions {
+        return configService.get<SequelizeModuleOptions>(ConfigDomains.db);
+      },
     }),
   ],
   controllers: [AppController],

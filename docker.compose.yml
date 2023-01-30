@@ -11,3 +11,19 @@ services:
     ports:
       - ${APP_PORT}:${APP_PORT}
     restart: unless-stopped
+    depends_on:
+      - db
+  db:
+    image: postgres:15
+    volumes:
+      - pg-data:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_USER=${DB_USER}
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+      - POSTGRES_DB=${DB_DATABASE}
+    ports:
+      - ${DB_PORT}:${DB_PORT}
+    command: -p ${DB_PORT}
+    restart: always
+volumes:
+  pg-data:
