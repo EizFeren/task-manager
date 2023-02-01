@@ -1,7 +1,9 @@
 import { Table, Model, Column, DataType, HasMany, CreatedAt, UpdatedAt } from 'sequelize-typescript';
+import { plainToInstance } from 'class-transformer';
 
 import { UserRoles } from 'src/user/user.enums';
 import { RefreshToken } from 'src/auth/auth.refresh-token.model';
+import { UserOutput } from 'src/user/user.outputs';
 
 @Table({
   tableName: 'users',
@@ -56,4 +58,14 @@ export class User extends Model {
 
   @UpdatedAt
   updatedAt: Date;
+
+  serialize(): UserOutput {
+    const plainUser = this.get({
+      plain: true,
+    });
+
+    return plainToInstance(UserOutput, plainUser, {
+      excludeExtraneousValues: true,
+    });
+  }
 }

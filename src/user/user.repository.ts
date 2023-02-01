@@ -55,4 +55,17 @@ export class UserRepository {
 
     return user;
   }
+
+  async getUser(id: string, rejectOnEmpty: boolean = false, transaction?: Transaction, lock?: LOCK): Promise<User> {
+    const user: User = await this.userModel.findByPk(id, {
+      transaction,
+      lock,
+    });
+
+    if (rejectOnEmpty && !user) {
+      throw new NotFoundException(userErrorMessages.notFound);
+    }
+
+    return user;
+  }
 }

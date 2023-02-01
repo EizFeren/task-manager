@@ -12,8 +12,6 @@ export const authErrorMessages = {
   },
   signIn: {
     user: {
-      notConfirmed: 'AUTH_SIGN_IN_USER_NOT_CONFIRMED',
-      blocked: 'AUTH_SIGN_IN_USER_BLOCKED',
       name: {
         empty: 'AUTH_SIGN_IN_USER_NAME_EMPTY',
       },
