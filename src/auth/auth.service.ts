@@ -6,7 +6,7 @@ import { Transaction } from 'sequelize';
 import { AuthHelper } from 'src/auth/auth.helper';
 import { AuthRepository } from 'src/auth/auth.repository';
 import { UserRepository } from 'src/user/user.repository';
-import { SignUpDto, SignInDto } from 'src/auth/auth.dtos';
+import { SignUpDto, SignInDto, RefreshAuthTokenDto } from 'src/auth/auth.dtos';
 import { SignUpOrSignInOutput } from 'src/auth/auth.outputs';
 import { User } from 'src/user/user.model';
 import { authErrorMessages } from 'src/auth/auth.constants';
@@ -89,6 +89,31 @@ export class AuthService {
         authToken,
         refreshToken: refreshToken.id,
       };
+    }
+
+    catch (error) {
+      await transaction.rollback();
+
+      throw error;
+    }
+  }
+
+  async refreshAuthToken(dto: RefreshAuthTokenDto): Promise<string> {
+    const transaction: Transaction = await this.sequelize.transaction();
+
+    try {
+      const refreshToken = await this.authRepository.getRefreshToken(dto.refreshToken, true, transaction, Transaction.LOCK.UPDATE);
+      const user: User = await refreshToken.$get('user', {
+        transaction,
+        lock: Transaction.LOCK.UPDATE,
+      });
+      const authToken: string = await this.jwtService.signAsync({
+        id: user.id,
+      });
+
+      await transaction.commit();
+
+      return authToken;
     }
 
     catch (error) {

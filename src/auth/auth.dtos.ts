@@ -1,4 +1,4 @@
-import { Length, IsNotEmpty } from 'class-validator';
+import { Length, IsNotEmpty, IsUUID } from 'class-validator';
 
 import { authErrorMessages } from 'src/auth/auth.constants';
 import { Match } from 'src/auth/auth.decorators';
@@ -21,9 +21,20 @@ export class SignUpDto {
 }
 
 export class SignInDto {
-  @IsNotEmpty()
+  @IsNotEmpty({
+    message: authErrorMessages.signIn.user.name.empty,
+  })
   name: string;
 
-  @IsNotEmpty()
+  @IsNotEmpty({
+    message: authErrorMessages.signIn.user.password.empty,
+  })
   password: string;
+}
+
+export class RefreshAuthTokenDto {
+  @IsUUID(4, {
+    message: authErrorMessages.refresAuthToken.validation.refreshToken.notUUID4,
+  })
+  refreshToken: string;
 }
