@@ -17,7 +17,7 @@ module.exports = {
       {
         name: process.env.OWNER_NAME,
         password: await bcrypt.hash(process.env.OWNER_PASSWORD, 7),
-        role: 'owner',
+        roleName: 'owner',
         confirmed: true,
       },
     ]);

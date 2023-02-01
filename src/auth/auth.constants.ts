@@ -29,4 +29,5 @@ export const authErrorMessages = {
     },
     notFound: 'AUTH_REFRESH_AUTH_TOKEN_NOT_FOUND',
   },
+  roleMissmatch: 'INVALID_ROLE_ACCESS_LEVEL',
 };
