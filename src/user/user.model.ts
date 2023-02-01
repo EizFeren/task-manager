@@ -1,6 +1,7 @@
-import { Table, Model, Column, DataType, CreatedAt, UpdatedAt } from 'sequelize-typescript';
+import { Table, Model, Column, DataType, HasMany, CreatedAt, UpdatedAt } from 'sequelize-typescript';
 
 import { UserRoles } from 'src/user/user.enums';
+import { RefreshToken } from 'src/auth/auth.refresh-token.model';
 
 @Table({
   tableName: 'users',
@@ -46,6 +47,9 @@ export class User extends Model {
     defaultValue: false,
   })
   blocked: boolean;
+
+  @HasMany(() => RefreshToken, 'userId')
+  refreshTokens: RefreshToken[];
 
   @CreatedAt
   createdAt: Date;

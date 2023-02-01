@@ -23,5 +23,13 @@ export async function loadConfig(): Promise<ConfigLoaderSchema> {
       password: process.env.DB_PASSWORD,
       database: process.env.DB_DATABASE,
     },
+    auth: {
+      jwt: {
+        secret: process.env.AUTH_JWT_SECRET,
+        signOptions: {
+          expiresIn: parseInt(process.env.AUTH_JWT_EXPIRES_IN),
+        },
+      },
+    },
   };
 }

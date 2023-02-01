@@ -6,6 +6,7 @@ import { validateConfig } from 'src/config/validator/config.validator';
 import { loadConfig } from 'src/config/loader/config.loader';
 import { ConfigDomains } from 'src/config/config.enums';
 import { UserModule } from 'src/user/user.module';
+import { AuthModule } from 'src/auth/auth.module';
 import { AppController } from 'src/app/app.controller';
 import { AppService } from 'src/app/app.service';
 
@@ -27,6 +28,7 @@ import { AppService } from 'src/app/app.service';
       },
     }),
     UserModule,
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [AppService],
