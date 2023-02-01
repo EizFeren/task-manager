@@ -6,10 +6,10 @@ import { Transaction } from 'sequelize';
 import { AuthHelper } from 'src/auth/auth.helper';
 import { AuthRepository } from 'src/auth/auth.repository';
 import { UserRepository } from 'src/user/user.repository';
+import { UserHelper } from 'src/user/user.helper';
 import { SignUpDto, SignInDto, RefreshAuthTokenDto } from 'src/auth/auth.dtos';
 import { SignUpOrSignInOutput } from 'src/auth/auth.outputs';
 import { User } from 'src/user/user.model';
-import { authErrorMessages } from 'src/auth/auth.constants';
 
 @Injectable()
 export class AuthService {
@@ -19,6 +19,7 @@ export class AuthService {
     private authHelper: AuthHelper,
     private authRepository: AuthRepository,
     private userRepository: UserRepository,
+    private userHelper: UserHelper,
   ) {}
 
   async signUp(dto: SignUpDto): Promise<SignUpOrSignInOutput> {
@@ -61,14 +62,7 @@ export class AuthService {
     try {
       const user: User = await this.userRepository.findUser(dto, true, transaction, Transaction.LOCK.UPDATE);
 
-      if (!user.confirmed) {
-        throw new ForbiddenException(authErrorMessages.signIn.user.notConfirmed);
-      }
-
-      if (user.blocked) {
-        throw new ForbiddenException(authErrorMessages.signIn.user.blocked);
-      }
-
+      this.userHelper.validateUser(user);
       await this.authHelper.checkPassword(dto.password, user.password);
 
       const [ authToken, refreshToken, ] = await Promise.all([

@@ -29,6 +29,9 @@ export async function loadConfig(): Promise<ConfigLoaderSchema> {
         signOptions: {
           expiresIn: parseInt(process.env.AUTH_JWT_EXPIRES_IN),
         },
+        verifyOptions: {
+          maxAge: parseInt(process.env.AUTH_JWT_EXPIRES_IN),
+        },
       },
     },
   };

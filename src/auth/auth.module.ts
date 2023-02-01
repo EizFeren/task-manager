@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common';
 import { SequelizeModule } from '@nestjs/sequelize';
 import { JwtModule, JwtModuleOptions } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
+import { PassportModule } from '@nestjs/passport';
 
 import { RefreshToken } from 'src/auth/auth.refresh-token.model';
 import { AuthConfig } from 'src/auth/auth.config';
@@ -11,6 +12,7 @@ import { AuthController } from 'src/auth/auth.controller';
 import { AuthHelper } from 'src/auth/auth.helper';
 import { AuthRepository } from 'src/auth/auth.repository';
 import { AuthService } from 'src/auth/auth.service';
+import { AuthJwtStrategy } from 'src/auth/jwt/auth.jwt.strategy';
 
 @Module({
   imports: [
@@ -27,6 +29,7 @@ import { AuthService } from 'src/auth/auth.service';
         return authConfig.jwt;
       },
     }),
+    PassportModule,
     UserModule,
   ],
   exports: [],
@@ -37,6 +40,7 @@ import { AuthService } from 'src/auth/auth.service';
     AuthHelper,
     AuthRepository,
     AuthService,
+    AuthJwtStrategy,
   ],
 })
 export class AuthModule {}
