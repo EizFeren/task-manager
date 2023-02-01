@@ -1,0 +1,10 @@
+'use strict';
+
+const path = require('path');
+const dbCliRoot = path.join(__dirname, 'db-cli');
+
+module.exports = {
+  config: path.join(dbCliRoot, 'config.js'),
+  'migrations-path': path.join(dbCliRoot, 'migrations'),
+  'seeders-path': path.join(dbCliRoot, 'seeders'),
+};
