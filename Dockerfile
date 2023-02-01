@@ -5,5 +5,5 @@ ARG port
 COPY [ "package.json", "yarn.lock", "./" ]
 RUN yarn install
 COPY . .
-CMD yarn run start:dev
+CMD yarn run db:migrations:do:all && yarn run db:seeders:do:all && yarn run start:dev
 EXPOSE $port

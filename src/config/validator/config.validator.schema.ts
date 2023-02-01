@@ -1,4 +1,5 @@
-import { IsEnum, IsPort, IsNotEmpty } from 'class-validator';
+import { IsEnum, IsPort, IsNotEmpty, Min, Max } from 'class-validator';
+import { Type } from 'class-transformer';
 
 import { EnvTypes } from 'src/config/config.enums';
 
@@ -23,4 +24,12 @@ export class ConfigValidatorSchema {
 
   @IsNotEmpty()
   DB_DATABASE: string;
+
+  @IsNotEmpty()
+  AUTH_JWT_SECRET: string;
+
+  @Type(() => Number)
+  @Min(60 * 60) // 1 hour
+  @Max(24 * 60 * 60) // 1 day
+  AUTH_JWT_EXPIRES_IN: number;
 }

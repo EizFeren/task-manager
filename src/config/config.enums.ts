@@ -8,4 +8,5 @@ export enum ConfigDomains {
   envType = 'envType',
   app = 'app',
   db = 'db',
+  auth = 'auth',
 }
