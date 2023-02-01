@@ -1,9 +1,9 @@
-import { Injectable, ConflictException } from '@nestjs/common';
+import { Injectable, ConflictException, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
-import { Transaction, UniqueConstraintError } from 'sequelize';
+import { Transaction, UniqueConstraintError, LOCK } from 'sequelize';
 
 import { User } from 'src/user/user.model';
-import { CreateUserInput } from 'src/user/user.inputs';
+import { CreateUserInput, FindUserInput } from 'src/user/user.inputs';
 import { UserRoles } from 'src/user/user.enums';
 import { userErrorMessages } from 'src/user/user.constants';
 
@@ -38,5 +38,21 @@ export class UserRepository {
 
       throw error;
     }
+  }
+
+  async findUser(input: FindUserInput, rejectOnEmpty: boolean = false, transaction?: Transaction, lock?: LOCK): Promise<User> {
+    const user: User = await this.userModel.findOne({
+      where: {
+        name: input.name,
+      },
+      transaction,
+      lock,
+    });
+
+    if (rejectOnEmpty && !user) {
+      throw new NotFoundException(userErrorMessages.notFound);
+    }
+
+    return user;
   }
 }

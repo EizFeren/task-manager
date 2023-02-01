@@ -1,4 +1,4 @@
-import { Length } from 'class-validator';
+import { Length, IsNotEmpty } from 'class-validator';
 
 import { authErrorMessages } from 'src/auth/auth.constants';
 import { Match } from 'src/auth/auth.decorators';
@@ -18,4 +18,12 @@ export class SignUpDto {
     message: authErrorMessages.signUp.validation.password.repeat,
   })
   passwordRepeat: string;
+}
+
+export class SignInDto {
+  @IsNotEmpty()
+  name: string;
+
+  @IsNotEmpty()
+  password: string;
 }
