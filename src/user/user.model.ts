@@ -1,6 +1,7 @@
-import { Table, Model, Column, DataType, HasMany, CreatedAt, UpdatedAt } from 'sequelize-typescript';
+import { Table, Model, Column, DataType, ForeignKey, BelongsTo, HasMany, CreatedAt, UpdatedAt } from 'sequelize-typescript';
 import { plainToInstance } from 'class-transformer';
 
+import { Role } from 'src/user/user.role.model';
 import { UserRoles } from 'src/user/user.enums';
 import { RefreshToken } from 'src/auth/auth.refresh-token.model';
 import { UserOutput } from 'src/user/user.outputs';
@@ -29,12 +30,16 @@ export class User extends Model {
   })
   password: string;
 
+  @ForeignKey(() => Role)
   @Column({
     type: DataType.STRING,
     allowNull: false,
     defaultValue: UserRoles.user,
   })
-  role: UserRoles;
+  roleName: UserRoles;
+
+  @BelongsTo(() => Role)
+  role: Role;
 
   @Column({
     type: DataType.BOOLEAN,

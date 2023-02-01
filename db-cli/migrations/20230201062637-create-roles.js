@@ -8,6 +8,10 @@ module.exports = {
         type: Sequelize.DataTypes.STRING,
         primaryKey: true,
       },
+      accessLevel: {
+        type: Sequelize.DataTypes.INTEGER,
+        allowNull: false,
+      },
     });
   },
   async down (queryInterface, Sequelize) {
